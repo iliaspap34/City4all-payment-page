@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City4All Business — Πλάνα Συνδρομών & Προσβασιμότητα</title>
+    <style>
+        :root {
+            --primary-blue: #1d4ed8;
+            --primary-blue-hover: #1e40af;
+            --emerald-green: #10b981;
+            --emerald-green-hover: #059669;
+            --bg-slate: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-slate);
+            color: var(--text-main);
+            padding: 24px 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        header.hero-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        header.hero-header h1 {
+            color: var(--primary-blue);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        header.hero-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        /* Toggle Billing Switch */
+        .billing-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--emerald-green);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        .badge-discount {
+            background-color: #dcfce7;
+            color: #15803d;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        /* Plans Grid */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .plan-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .plan-card.featured {
+            border-color: var(--emerald-green);
+        }
+
+        .featured-tag {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--emerald-green);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 16px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .plan-description {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            min-height: 40px;
+            margin-bottom: 20px;
+        }
+
+        .plan-price {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+        }
+
+        .plan-price span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 28px;
+            flex-grow: 1;
+        }
+
+        .plan-features li {
+            font-size: 0.92rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: var(--emerald-green);
+            font-weight: bold;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--emerald-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--emerald-green-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-blue-hover);
+        }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 16px;
+            line-height: 1.4;
+        }
+
+        /* Flow Overlay / Screens */
+        .view-section {
+            display: none;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-top: 20px;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        /* Success Onboarding Screen */
+        .success-box {
+            text-align: left;
+        }
+
+        .success-header {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .success-header h2 {
+            color: #166534;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .order-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            background: var(--bg-slate);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .order-meta div span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .order-meta div strong {
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+
+        .status-pill {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .next-steps h3 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: var(--primary-blue);
+        }
+
+        .next-steps ol {
+            padding-left: 20px;
+            margin-bottom: 24px;
+        }
+
+        .next-steps ol li {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .onboarding-info {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+
+        .prototype-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px dashed var(--border-color);
+            padding-top: 16px;
+            font-style: italic;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .plans-grid { grid-template-columns: 1fr; }
+            .view-section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- MAIN PRICING VIEW -->
+    <div id="pricingView">
+        <header class="hero-header">
+            <h1>Πλάνα Συνδρομών City4All</h1>
+            <p>Ενισχύστε την προσβασιμότητα της επιχείρησής σας και βοηθήστε περισσότερους ανθρώπους να σας ανακαλύψουν με διαφάνεια και αξιοπιστία.</p>
+            
+            <div class="billing-toggle">
+                <span>Μηναία Χρέωση</span>
+                <label class="switch">
+                    <input type="checkbox" id="billingToggle" onchange="toggleBilling()">
+                    <span class="slider"></span>
+                </label>
+                <span>Ετήσια Χρέωση <span class="badge-discount">-20%</span></span>
+            </div>
+        </header>
+
+        <div class="plans-grid">
+            <!-- PLAN A -->
+            <div class="plan-card">
+                <div>
+                    <h2 class="plan-name">Starter</h2>
+                    <p class="plan-description">Βασική ψηφιακή παρουσία & QR Code για μικρές επιχειρήσεις.</p>
+                    <div class="plan-price" id="priceStarter">10€ <span>/μήνα</span></div>
+                    
+                    <ul class="plan-features">
+                        <li>Σταθερό ψηφιακό προφίλ προσβασιμότητας</li>
+                        <li>QR Code για την είσοδο του καταστήματος</li>
+                        <li>Βασικά στοιχεία επικοινωνίας & τοποθεσίας</li>
+                        <li>Δυνατότητα αιτημάτων ενημέρωσης</li>
+                    </ul>
+                </div>
+                <div>
+                    <button class="btn btn-secondary" onclick="selectPlan('Starter', '10€')">Επιλογή Starter</button>
+                </div>
+            </div>
+
+            <!-- PLAN B (VERIFIED - FEATURED) -->
+            <div class="plan-card featured">
+                <div class="featured-tag">Δημοφιλέστερο</div>
+                <div>
+                    <h2 class="plan-name">Verified</h2>
+                    <p class="plan-description">Πλήρης τεκμηριωμένη αξιολόγηση & πιστοποιημένο προφίλ.</p>
+                    <div class="plan-price" id="priceVerified">29€ <span>/μήνα</span></div>
+                    
+                    <ul class="plan-features">
+                        <li>Όλα τα χαρακτηριστικά του Starter</li>
+                        <li><strong>Συντονισμός αξιολόγησης προσβασιμότητας</strong></li>
+                        <li>Αναλυτικό προφίλ με ευρήματα & περιορισμούς</li>
+                        <li>Ένδειξη τρόπου ελέγχου (Επιτόπια / Εξ αποστάσεως)</li>
+                        <li>Προτεραιότητα στην υποστήριξη</li>
+                    </ul>
+                </div>
+                <div>
+                    <button class="btn btn-primary" onclick="selectPlan('Verified', '29€')">Επιλογή Verified</button>
+                </div>
+            </div>
+
+            <!-- PLAN C -->
+            <div class="plan-card">
+                <div>
+                    <h2 class="plan-name">Business+</h2>
+                    <p class="plan-description">Για επιχειρήσεις με πολλαπλά καταστήματα ή δίκτυα.</p>
+                    <div class="plan-price" id="priceBusiness">50€+ <span>/μήνα</span></div>
+                    
+                    <ul class="plan-features">
+                        <li>Όλα τα χαρακτηριστικά του Verified</li>
+                        <li>Κεντρική διαχείριση πολλαπλών υποκαταστημάτων</li>
+                        <li>Τυποποιημένη αξιολόγηση ανά τοποθεσία</li>
+                        <li>Συγκεντρωτικές αναφορές προσβασιμότητας</li>
+                        <li>Ειδικές προσαρμοσμένες λύσεις</li>
+                    </ul>
+                </div>
+                <div>
+                    <button class="btn btn-secondary" onclick="selectPlan('Business+', '50€+')">Εκδήλωση Ενδιαφέροντος</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="disclaimer">
+            * Οι τιμές είναι ενδεικτικές. Η αγορά συνδρομής παρέχει πρόσβαση στις ψηφιακές υπηρεσίες και κάλυψη του κόστους αξιολόγησης.<br>
+            Η συνδρομή <strong>δεν καθιστά αυτόματα μια επιχείρηση "προσβάσιμη"</strong> χωρίς την ολοκλήρωση του σχετικού ελέγχου.
+        </p>
+    </div>
+
+    <!-- CHECKOUT / SIMULATION FORM VIEW -->
+    <div id="checkoutView" class="view-section">
+        <h2 style="margin-bottom: 8px; color: var(--primary-blue);">Ολοκλήρωση Συνδρομής</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">Επιλέξατε το πακέτο: <strong id="selectedPlanTitle" style="color: var(--emerald-green);">Verified</strong></p>
+
+        <form onsubmit="processPayment(event)">
+            <div class="form-group">
+                <label for="bizName">Όνομα Επιχείρησης *</label>
+                <input type="text" id="bizName" placeholder="π.χ. Καφέ Ο Φάρος" required>
+            </div>
+            <div class="form-group">
+                <label for="contactEmail">Email Επικοινωνίας *</label>
+                <input type="email" id="contactEmail" placeholder="name@business.gr" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Τηλέφωνο *</label>
+                <input type="tel" id="phone" placeholder="210 XXXXXXX" required>
+            </div>
+
+            <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; margin: 20px 0; font-size: 0.85rem; color: var(--text-muted);">
+                🔒 <strong>Ασφαλής Πληρωμή (Stripe / Viva Wallet):</strong> Σε περιβάλλον παραγωγής, εδώ θα καταχωρούνται τα στοιχεία της κάρτας σας με πλήρη κρυπτογράφηση.
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="button" class="btn" style="background: #e2e8f0; color: #334155; width: 30%;" onclick="showPricing()">Πίσω</button>
+                <button type="submit" class="btn btn-primary" style="width: 70%;">Πληρωμή & Ενεργοποίηση</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- SUCCESS / ONBOARDING VIEW -->
+    <div id="successView" class="view-section">
+        <div class="success-box">
+            <div class="success-header">
+                <h2>Η παραγγελία σας επιβεβαιώθηκε!</h2>
+                <p style="color: #15803d; font-size: 0.95rem;">City4All Business · Παράδειγμα σχεδιασμού</p>
+            </div>
+
+            <div class="order-meta">
+                <div>
+                    <span>Πακέτο</span>
+                    <strong id="confirmPlanName">Verified</strong>
+                </div>
+                <div>
+                    <span>Κατάσταση</span>
+                    <strong><span class="status-pill">Σε αναμονή onboarding</span></strong>
+                </div>
+            </div>
+
+            <div class="next-steps">
+                <h3>Τι θα συμβεί τώρα</h3>
+                <ol>
+                    <li>Θα επικοινωνήσει μαζί σας ο υπεύθυνος συνεργασιών του City4All, <strong>Σταύρος</strong>.</li>
+                    <li>Θα επιβεβαιώσουμε τα στοιχεία της επιχείρησής σας και θα ζητήσουμε όσα χρειάζονται για το προφίλ.</li>
+                    <li>Αν το πακέτο σας περιλαμβάνει αξιολόγηση, θα συντονίσουμε τον τρόπο και τον χρόνο συλλογής των στοιχείων.</li>
+                    <li>Μετά τον έλεγχο και την έγκριση των πληροφοριών, θα λάβετε τον σύνδεσμο του προφίλ και το QR code σας.</li>
+                </ol>
+            </div>
+
+            <div class="onboarding-info">
+                <strong>Υπεύθυνος onboarding:</strong> Σταύρος<br>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Τα στοιχεία επικοινωνίας του υπευθύνου και το εκτιμώμενο χρονοδιάγραμμα θα εμφανίζονται εδώ όταν οριστικοποιηθούν.</span>
+            </div>
+
+            <div class="prototype-note">
+                Η παραπάνω οθόνη είναι πρότυπο UI. Η κατάσταση πληρωμής, η ανάθεση υπευθύνου και τα στοιχεία παραγγελίας πρέπει να προέρχονται από πραγματικό backend.
+            </div>
+
+            <div style="margin-top: 24px; text-align: center;">
+                <button class="btn btn-secondary" style="max-width: 250px;" onclick="showPricing()">Επιστροφή στα Πλάνα</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let currentPlan = "Verified";
+
+    function toggleBilling() {
+        const isAnnual = document.getElementById('billingToggle').checked;
+        document.getElementById('priceStarter').innerHTML = isAnnual ? '8€ <span>/μήνα (80€/έτος)</span>' : '10€ <span>/μήνα</span>';
+        document.getElementById('priceVerified').innerHTML = isAnnual ? '23€ <span>/μήνα (230€/έτος)</span>' : '29€ <span>/μήνα</span>';
+        document.getElementById('priceBusiness').innerHTML = isAnnual ? '40€+ <span>/μήνα</span>' : '50€+ <span>/μήνα</span>';
+    }
+
+    function selectPlan(planName, price) {
+        currentPlan = planName;
+        document.getElementById('selectedPlanTitle').innerText = planName + " (" + price + ")";
+        document.getElementById('pricingView').style.display = 'none';
+        document.getElementById('checkoutView').classList.add('active');
+        document.getElementById('successView').classList.remove('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showPricing() {
+        document.getElementById('pricingView').style.display = 'block';
+        document.getElementById('checkoutView').classList.remove('active');
+        document.getElementById('successView').classList.remove('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function processPayment(event) {
+        event.preventDefault();
+        document.getElementById('confirmPlanName').innerText = currentPlan;
+        document.getElementById('checkoutView').classList.remove('active');
+        document.getElementById('successView').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
