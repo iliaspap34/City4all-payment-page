@@ -1,582 +1,228 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City4All Business — Πλάνα Συνδρομών & Προσβασιμότητα</title>
-    <style>
-        :root {
-            --primary-blue: #1d4ed8;
-            --primary-blue-hover: #1e40af;
-            --emerald-green: #10b981;
-            --emerald-green-hover: #059669;
-            --bg-slate: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --border-color: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>City4All Business</title>
+<style>
+:root{--navy:#00304d;--blue:#005e95;--green:#55eb34;--tint:#e9f4fc;--ink:#1b2733;--muted:#4a5865;--line:#d5dde4;--err:#a31515}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.55 "Avenir Next","Segoe UI",system-ui,Arial,sans-serif;color:var(--ink);background:#fff}
+.wrap{width:min(1000px,100% - 2rem);margin:0 auto;padding:1.5rem 0 2rem}
+h1{color:var(--navy);font-size:clamp(1.5rem,4.5vw,2.1rem);line-height:1.2;margin:0 0 .5rem}
+h2,h3{color:var(--navy);margin:0 0 .4rem;line-height:1.25}
+p{margin:0 0 .8rem}
+.note{background:#fff6dd;border:1px solid #d9a400;color:#5c4300;border-radius:6px;padding:.6rem .9rem;font-size:.92rem;margin:1rem 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:1rem;margin:1.2rem 0}
+.card{border:1px solid var(--line);border-radius:8px;padding:1.1rem;display:flex;flex-direction:column;min-width:0}
+.card.main{border:2px solid var(--blue)}
+.card .tag{font-size:.78rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.05em}
+.price{font-size:1.6rem;font-weight:800;color:var(--navy);margin:.2rem 0 0;line-height:1.1}
+.price small{font-size:.85rem;font-weight:500;color:var(--muted)}
+.hint{font-size:.85rem;color:#7a4f00;margin:.1rem 0 .6rem}
+.card ul{margin:.2rem 0 1rem;padding-left:1.1rem;flex:1}
+.card li{margin-bottom:.3rem;font-size:.95rem}
+.btn{font:inherit;font-weight:700;border:2px solid var(--navy);background:#fff;color:var(--navy);padding:.7rem 1rem;border-radius:6px;cursor:pointer;min-height:46px;width:100%}
+.btn:hover{background:var(--tint)}
+.btn.solid{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.solid:hover{background:var(--navy)}
+.btn[disabled]{opacity:.6;cursor:wait}
+.support{background:var(--navy);color:#fff;border-radius:8px;padding:1.1rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+.support h2{color:#fff}.support p{margin:0;color:#dbe9f3;max-width:60ch;font-size:.95rem}
+.support .btn{width:auto;background:var(--green);border-color:var(--green);color:var(--navy)}
+.fine{font-size:.85rem;color:var(--muted);margin-top:1rem}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid #27a6f5;outline-offset:2px}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-slate);
-            color: var(--text-main);
-            padding: 24px 16px;
-            line-height: 1.5;
-        }
-
-        .container {
-            max-width: 1080px;
-            margin: 0 auto;
-        }
-
-        header.hero-header {
-            text-align: center;
-            margin-bottom: 36px;
-        }
-
-        header.hero-header h1 {
-            color: var(--primary-blue);
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
-
-        header.hero-header p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        /* Toggle Billing Switch */
-        .billing-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 20px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 26px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #cbd5e1;
-            transition: .3s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--emerald-green);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(22px);
-        }
-
-        .badge-discount {
-            background-color: #dcfce7;
-            color: #15803d;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-weight: 700;
-        }
-
-        /* Plans Grid */
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .plan-card {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 32px 24px;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .plan-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .plan-card.featured {
-            border-color: var(--emerald-green);
-        }
-
-        .featured-tag {
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--emerald-green);
-            color: white;
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 4px 16px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .plan-name {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 8px;
-        }
-
-        .plan-description {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            min-height: 40px;
-            margin-bottom: 20px;
-        }
-
-        .plan-price {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
-        }
-
-        .plan-price span {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .plan-features {
-            list-style: none;
-            margin-bottom: 28px;
-            flex-grow: 1;
-        }
-
-        .plan-features li {
-            font-size: 0.92rem;
-            color: var(--text-main);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .plan-features li::before {
-            content: "✓";
-            color: var(--emerald-green);
-            font-weight: bold;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: none;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background-color: var(--emerald-green);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--emerald-green-hover);
-        }
-
-        .btn-secondary {
-            background-color: var(--primary-blue);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--primary-blue-hover);
-        }
-
-        .disclaimer {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 16px;
-            line-height: 1.4;
-        }
-
-        /* Flow Overlay / Screens */
-        .view-section {
-            display: none;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 32px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border-color);
-            margin-top: 20px;
-        }
-
-        .view-section.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.95rem;
-        }
-
-        /* Success Onboarding Screen */
-        .success-box {
-            text-align: left;
-        }
-
-        .success-header {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-
-        .success-header h2 {
-            color: #166534;
-            font-size: 1.4rem;
-            margin-bottom: 4px;
-        }
-
-        .order-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            background: var(--bg-slate);
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-        }
-
-        .order-meta div span {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .order-meta div strong {
-            font-size: 1.05rem;
-            color: var(--text-main);
-        }
-
-        .status-pill {
-            display: inline-block;
-            background: #fef3c7;
-            color: #92400e;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-        }
-
-        .next-steps h3 {
-            font-size: 1.1rem;
-            margin-bottom: 16px;
-            color: var(--primary-blue);
-        }
-
-        .next-steps ol {
-            padding-left: 20px;
-            margin-bottom: 24px;
-        }
-
-        .next-steps ol li {
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-            color: var(--text-main);
-        }
-
-        .onboarding-info {
-            background: #eff6ff;
-            border-left: 4px solid var(--primary-blue);
-            padding: 16px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 24px;
-            font-size: 0.9rem;
-        }
-
-        .prototype-note {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            border-top: 1px dashed var(--border-color);
-            padding-top: 16px;
-            font-style: italic;
-        }
-
-        @media (max-width: 640px) {
-            body { padding: 12px; }
-            .plans-grid { grid-template-columns: 1fr; }
-            .view-section { padding: 20px; }
-        }
-    </style>
+/* popups */
+dialog{border:0;padding:0;border-radius:10px;width:min(560px,calc(100% - 1rem));max-height:calc(100dvh - 1rem);box-shadow:0 12px 40px rgba(0,0,0,.35);color:var(--ink)}
+dialog::backdrop{background:rgba(0,30,50,.6)}
+.bar{background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:.65rem .9rem;border-radius:10px 10px 0 0}
+.bar strong{font-size:.98rem}
+.x{background:none;border:0;color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;min-width:44px;min-height:44px}
+.body{padding:1rem;overflow:auto;max-height:calc(100dvh - 5rem)}
+.row{display:flex;align-items:baseline;gap:.6rem;border-bottom:1px solid var(--line);padding:.35rem 0}
+.row>label,.row>span.k{width:4.6rem;flex:none;color:var(--muted);font-size:.9rem}
+.row input,.row textarea{flex:1;min-width:0;border:0;font:inherit;color:var(--ink);padding:.4rem .2rem;background:transparent}
+.row input:focus,.row textarea:focus{outline:2px solid #27a6f5;outline-offset:1px}
+.row.ro input{color:var(--muted)}
+.row.big{display:block;border-bottom:0}
+.row.big textarea{width:100%;min-height:150px;resize:vertical;border:1px solid var(--line);border-radius:6px;padding:.6rem;margin-top:.4rem}
+.err{color:var(--err);font-size:.88rem;font-weight:600;margin:.15rem 0 0 5.2rem;display:none}
+.bad .err{display:block}
+.bad input,.bad textarea{outline:2px solid var(--err)}
+.chk{display:flex;gap:.55rem;margin:.8rem 0 .3rem;font-size:.9rem;align-items:flex-start}
+.chk input{width:1.2rem;height:1.2rem;margin-top:.15rem;flex:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.msg{border-radius:6px;padding:.7rem .9rem;margin:.8rem 0 0;display:none;font-size:.93rem}
+.msg.show{display:block}.msg.bad2{background:#fff8f8;border:1px solid var(--err);color:#6b0f0f}
+.actions{display:flex;gap:.6rem;margin-top:.9rem;flex-wrap:wrap}
+.actions .btn{width:auto;flex:1 1 auto}
+.ok h2{font-size:1.25rem}.ok p{font-size:.96rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:480px){.row.ro input{font-size:.82rem}.row{flex-wrap:wrap}.row>label,.row>span.k{width:100%}.err{margin-left:0}}
+</style>
 </head>
 <body>
+<div class="wrap">
+  <h1>City4All Business — συνεργασίες προσβασιμότητας</h1>
+  <p>Βοηθάμε επιχειρήσεις και φορείς να καταγράφουν και να επικοινωνούν ουσιαστικές πληροφορίες προσβασιμότητας, με ψηφιακό προφίλ και QR code. Η συνεργασία δεν σημαίνει ότι ένας χώρος είναι «πιστοποιημένα» προσβάσιμος.</p>
+  <p class="note" role="note"><strong>Προσχέδιο:</strong> οι τιμές είναι ενδεικτικές και δεν αποτελούν ενεργή προσφορά. Δεν γίνονται ηλεκτρονικές πληρωμές· τα κουμπιά ανοίγουν παράθυρο αποστολής μηνύματος. <span id="untested"></span></p>
 
-<div class="container">
+  <div class="grid">
+    <article class="card">
+      <span class="tag">Μικρομεσαίες επιχειρήσεις</span>
+      <h2>Inclusive Partners</h2>
+      <p class="price">€10<small> / μήνα</small></p><p class="hint">Ενδεικτική τιμή βασικού πακέτου</p>
+      <ul><li>Ψηφιακό προφίλ επιχείρησης <em>(σε ανάπτυξη)</em></li><li>QR code προς το προφίλ <em>(σε ανάπτυξη)</em></li><li>Αιτήματα ενημέρωσης στοιχείων</li><li>Προαιρετική αξιολόγηση, κατόπιν συμφωνίας</li></ul>
+      <button class="btn" data-open="inclusive">Εξερευνήστε τη συνεργασία</button>
+    </article>
+    <article class="card main">
+      <span class="tag">Μεγάλες επιχειρήσεις · πολλές τοποθεσίες</span>
+      <h2>Enterprise — Accessibility Partners</h2>
+      <p class="price">από €50<small> / μήνα ή προσφορά</small></p><p class="hint">Ενδεικτική τιμή· εξαρτάται από τοποθεσίες και εύρος</p>
+      <ul><li>Όλα του Inclusive Partners</li><li>Προφίλ και QR ανά τοποθεσία <em>(σε ανάπτυξη)</em></li><li>Συντονισμός αξιολογήσεων και αναφορές <em>(σε ανάπτυξη)</em></li><li>Περιλήψεις με AI και ανθρώπινο έλεγχο <em>(προγραμματισμένο)</em></li></ul>
+      <button class="btn solid" data-open="enterprise">Συζητήστε μια εταιρική συνεργασία</button>
+    </article>
+    <article class="card">
+      <span class="tag">Δήμοι · δημόσιοι φορείς</span>
+      <h2>Public Sector</h2>
+      <p class="price" style="font-size:1.2rem">Προσφορά κατόπιν συζήτησης</p><p class="hint">Χωρίς σταθερή τιμή</p>
+      <ul><li>Πληροφορίες προσβασιμότητας δημόσιων χώρων</li><li>Χαρτογράφηση και αναφορές</li><li>Πιλοτικά προγράμματα</li><li>Μπορεί να απαιτούνται διαδικασίες προμηθειών. Το City4All δεν είναι εγκεκριμένος προμηθευτής του δημοσίου.</li></ul>
+      <button class="btn" data-open="public">Ζητήστε διαβούλευση για τον δημόσιο τομέα</button>
+    </article>
+  </div>
 
-    <!-- MAIN PRICING VIEW -->
-    <div id="pricingView">
-        <header class="hero-header">
-            <h1>Πλάνα Συνδρομών City4All</h1>
-            <p>Ενισχύστε την προσβασιμότητα της επιχείρησής σας και βοηθήστε περισσότερους ανθρώπους να σας ανακαλύψουν με διαφάνεια και αξιοπιστία.</p>
-            
-            <div class="billing-toggle">
-                <span>Μηναία Χρέωση</span>
-                <label class="switch">
-                    <input type="checkbox" id="billingToggle" onchange="toggleBilling()">
-                    <span class="slider"></span>
-                </label>
-                <span>Ετήσια Χρέωση <span class="badge-discount">-20%</span></span>
-            </div>
-        </header>
-
-        <div class="plans-grid">
-            <!-- PLAN A -->
-            <div class="plan-card">
-                <div>
-                    <h2 class="plan-name">Starter</h2>
-                    <p class="plan-description">Βασική ψηφιακή παρουσία & QR Code για μικρές επιχειρήσεις.</p>
-                    <div class="plan-price" id="priceStarter">10€ <span>/μήνα</span></div>
-                    
-                    <ul class="plan-features">
-                        <li>Σταθερό ψηφιακό προφίλ προσβασιμότητας</li>
-                        <li>QR Code για την είσοδο του καταστήματος</li>
-                        <li>Βασικά στοιχεία επικοινωνίας & τοποθεσίας</li>
-                        <li>Δυνατότητα αιτημάτων ενημέρωσης</li>
-                    </ul>
-                </div>
-                <div>
-                    <button class="btn btn-secondary" onclick="selectPlan('Starter', '10€')">Επιλογή Starter</button>
-                </div>
-            </div>
-
-            <!-- PLAN B (VERIFIED - FEATURED) -->
-            <div class="plan-card featured">
-                <div class="featured-tag">Δημοφιλέστερο</div>
-                <div>
-                    <h2 class="plan-name">Verified</h2>
-                    <p class="plan-description">Πλήρης τεκμηριωμένη αξιολόγηση & πιστοποιημένο προφίλ.</p>
-                    <div class="plan-price" id="priceVerified">29€ <span>/μήνα</span></div>
-                    
-                    <ul class="plan-features">
-                        <li>Όλα τα χαρακτηριστικά του Starter</li>
-                        <li><strong>Συντονισμός αξιολόγησης προσβασιμότητας</strong></li>
-                        <li>Αναλυτικό προφίλ με ευρήματα & περιορισμούς</li>
-                        <li>Ένδειξη τρόπου ελέγχου (Επιτόπια / Εξ αποστάσεως)</li>
-                        <li>Προτεραιότητα στην υποστήριξη</li>
-                    </ul>
-                </div>
-                <div>
-                    <button class="btn btn-primary" onclick="selectPlan('Verified', '29€')">Επιλογή Verified</button>
-                </div>
-            </div>
-
-            <!-- PLAN C -->
-            <div class="plan-card">
-                <div>
-                    <h2 class="plan-name">Business+</h2>
-                    <p class="plan-description">Για επιχειρήσεις με πολλαπλά καταστήματα ή δίκτυα.</p>
-                    <div class="plan-price" id="priceBusiness">50€+ <span>/μήνα</span></div>
-                    
-                    <ul class="plan-features">
-                        <li>Όλα τα χαρακτηριστικά του Verified</li>
-                        <li>Κεντρική διαχείριση πολλαπλών υποκαταστημάτων</li>
-                        <li>Τυποποιημένη αξιολόγηση ανά τοποθεσία</li>
-                        <li>Συγκεντρωτικές αναφορές προσβασιμότητας</li>
-                        <li>Ειδικές προσαρμοσμένες λύσεις</li>
-                    </ul>
-                </div>
-                <div>
-                    <button class="btn btn-secondary" onclick="selectPlan('Business+', '50€+')">Εκδήλωση Ενδιαφέροντος</button>
-                </div>
-            </div>
-        </div>
-
-        <p class="disclaimer">
-            * Οι τιμές είναι ενδεικτικές. Η αγορά συνδρομής παρέχει πρόσβαση στις ψηφιακές υπηρεσίες και κάλυψη του κόστους αξιολόγησης.<br>
-            Η συνδρομή <strong>δεν καθιστά αυτόματα μια επιχείρηση "προσβάσιμη"</strong> χωρίς την ολοκλήρωση του σχετικού ελέγχου.
-        </p>
-    </div>
-
-    <!-- CHECKOUT / SIMULATION FORM VIEW -->
-    <div id="checkoutView" class="view-section">
-        <h2 style="margin-bottom: 8px; color: var(--primary-blue);">Ολοκλήρωση Συνδρομής</h2>
-        <p style="color: var(--text-muted); margin-bottom: 24px;">Επιλέξατε το πακέτο: <strong id="selectedPlanTitle" style="color: var(--emerald-green);">Verified</strong></p>
-
-        <form onsubmit="processPayment(event)">
-            <div class="form-group">
-                <label for="bizName">Όνομα Επιχείρησης *</label>
-                <input type="text" id="bizName" placeholder="π.χ. Καφέ Ο Φάρος" required>
-            </div>
-            <div class="form-group">
-                <label for="contactEmail">Email Επικοινωνίας *</label>
-                <input type="email" id="contactEmail" placeholder="name@business.gr" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Τηλέφωνο *</label>
-                <input type="tel" id="phone" placeholder="210 XXXXXXX" required>
-            </div>
-
-            <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; margin: 20px 0; font-size: 0.85rem; color: var(--text-muted);">
-                🔒 <strong>Ασφαλής Πληρωμή (Stripe / Viva Wallet):</strong> Σε περιβάλλον παραγωγής, εδώ θα καταχωρούνται τα στοιχεία της κάρτας σας με πλήρη κρυπτογράφηση.
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: 24px;">
-                <button type="button" class="btn" style="background: #e2e8f0; color: #334155; width: 30%;" onclick="showPricing()">Πίσω</button>
-                <button type="submit" class="btn btn-primary" style="width: 70%;">Πληρωμή & Ενεργοποίηση</button>
-            </div>
-        </form>
-    </div>
-
-    <!-- SUCCESS / ONBOARDING VIEW -->
-    <div id="successView" class="view-section">
-        <div class="success-box">
-            <div class="success-header">
-                <h2>Η παραγγελία σας επιβεβαιώθηκε!</h2>
-                <p style="color: #15803d; font-size: 0.95rem;">City4All Business · Παράδειγμα σχεδιασμού</p>
-            </div>
-
-            <div class="order-meta">
-                <div>
-                    <span>Πακέτο</span>
-                    <strong id="confirmPlanName">Verified</strong>
-                </div>
-                <div>
-                    <span>Κατάσταση</span>
-                    <strong><span class="status-pill">Σε αναμονή onboarding</span></strong>
-                </div>
-            </div>
-
-            <div class="next-steps">
-                <h3>Τι θα συμβεί τώρα</h3>
-                <ol>
-                    <li>Θα επικοινωνήσει μαζί σας ο υπεύθυνος συνεργασιών του City4All, <strong>Σταύρος</strong>.</li>
-                    <li>Θα επιβεβαιώσουμε τα στοιχεία της επιχείρησής σας και θα ζητήσουμε όσα χρειάζονται για το προφίλ.</li>
-                    <li>Αν το πακέτο σας περιλαμβάνει αξιολόγηση, θα συντονίσουμε τον τρόπο και τον χρόνο συλλογής των στοιχείων.</li>
-                    <li>Μετά τον έλεγχο και την έγκριση των πληροφοριών, θα λάβετε τον σύνδεσμο του προφίλ και το QR code σας.</li>
-                </ol>
-            </div>
-
-            <div class="onboarding-info">
-                <strong>Υπεύθυνος onboarding:</strong> Σταύρος<br>
-                <span style="color: var(--text-muted); font-size: 0.85rem;">Τα στοιχεία επικοινωνίας του υπευθύνου και το εκτιμώμενο χρονοδιάγραμμα θα εμφανίζονται εδώ όταν οριστικοποιηθούν.</span>
-            </div>
-
-            <div class="prototype-note">
-                Η παραπάνω οθόνη είναι πρότυπο UI. Η κατάσταση πληρωμής, η ανάθεση υπευθύνου και τα στοιχεία παραγγελίας πρέπει να προέρχονται από πραγματικό backend.
-            </div>
-
-            <div style="margin-top: 24px; text-align: center;">
-                <button class="btn btn-secondary" style="max-width: 250px;" onclick="showPricing()">Επιστροφή στα Πλάνα</button>
-            </div>
-        </div>
-    </div>
-
+  <div class="support">
+    <div><h2>Στηρίξτε το City4All</h2><p>Η στήριξή σας μπορεί να βοηθήσει στη βελτίωση των πληροφοριών προσβασιμότητας και στην ανάπτυξη συμπεριληπτικών εργαλείων. <strong>Οι δωρεές δεν υποστηρίζονται ηλεκτρονικά προς το παρόν</strong>· το μήνυμα εκφράζει μόνο ενδιαφέρον και δεν γίνεται καμία χρέωση.</p></div>
+    <button class="btn" data-open="donation">Στηρίξτε το City4All</button>
+  </div>
+  <p class="fine">Η υποβολή είναι έκφραση ενδιαφέροντος, όχι αγορά, συνδρομή ή πληρωμή. Επικοινωνία: <a href="mailto:city4all2025@gmail.com">city4all2025@gmail.com</a></p>
 </div>
 
+<!-- POPUP 1: compose -->
+<dialog id="compose" aria-labelledby="c-title">
+  <div class="bar"><strong id="c-title">Νέο μήνυμα</strong><button class="x" type="button" id="c-close" aria-label="Κλείσιμο">&times;</button></div>
+  <form class="body" id="form" novalidate>
+    <div class="row ro"><span class="k">Προς</span><input type="text" id="to" readonly aria-label="Παραλήπτης"></div>
+    <div class="row ro"><span class="k">Θέμα</span><input type="text" id="subject" readonly aria-label="Θέμα"></div>
+    <div class="row" id="r-name"><label for="name">Όνομα *</label><input id="name" autocomplete="name" required></div><p class="err" id="e-name">Συμπληρώστε το όνομά σας.</p>
+    <div class="row" id="r-org"><label for="org" id="org-l">Φορέας *</label><input id="org" autocomplete="organization"></div><p class="err" id="e-org">Συμπληρώστε την επωνυμία.</p>
+    <div class="row" id="r-email"><label for="email">Από *</label><input id="email" type="email" autocomplete="email" placeholder="το email σας" required></div><p class="err" id="e-email">Συμπληρώστε έγκυρο email.</p>
+    <div class="row" id="r-phone"><label for="phone">Τηλέφωνο</label><input id="phone" type="tel" autocomplete="tel" placeholder="προαιρετικό"></div><p class="err" id="e-phone">Μη έγκυρος αριθμός.</p>
+    <div class="row big" id="r-msg"><label for="message">Μήνυμα *</label><textarea id="message" maxlength="3000" required></textarea></div><p class="err" id="e-msg" style="margin-left:0">Γράψτε ένα σύντομο μήνυμα.</p>
+    <div class="hp" aria-hidden="true"><label for="hp">Μην συμπληρώσετε</label><input id="hp" tabindex="-1" autocomplete="off"></div>
+    <label class="chk" id="r-consent"><input type="checkbox" id="consent"><span>Συναινώ να χρησιμοποιηθούν τα στοιχεία μου μόνο για να λάβω απάντηση. Τα στοιχεία αποστέλλονται μέσω της υπηρεσίας φορμών FormSubmit στο email του City4All. Δεν ζητούμε στοιχεία πληρωμής. *</span></label>
+    <p class="err" id="e-consent" style="margin-left:0">Χρειάζεται η συγκατάθεσή σας για να σταλεί το μήνυμα.</p>
+    <div class="msg bad2" id="fail" role="alert" tabindex="-1"></div>
+    <div class="actions"><button class="btn solid" type="submit" id="send">Αποστολή</button><button class="btn" type="button" id="cancel">Ακύρωση</button></div>
+  </form>
+</dialog>
+
+<!-- POPUP 2: confirmation (shown ONLY after the service accepted the message) -->
+<dialog id="done" aria-labelledby="d-title">
+  <div class="bar"><strong>Το μήνυμα στάλθηκε</strong><button class="x" type="button" id="d-close" aria-label="Κλείσιμο">&times;</button></div>
+  <div class="body ok" role="status" aria-live="polite">
+    <h2 id="d-title">Ευχαριστούμε που επικοινωνήσατε με το City4All!</h2>
+    <p>Το αίτημά σας υποβλήθηκε με επιτυχία. Η ομάδα μας θα το εξετάσει και θα επικοινωνήσει μαζί σας με τα στοιχεία που δώσατε.</p>
+    <p>Για συνεργασίες επιχειρήσεων και φορέων, το επόμενο βήμα μπορεί να είναι μια συζήτηση για τις ανάγκες σας, το εύρος και τις υπηρεσίες που ίσως ταιριάζουν. Για στήριξη, θα σας εξηγήσουμε τις διαθέσιμες επιλογές.</p>
+    <p><strong>Σημείωση:</strong> η υποβολή είναι έκφραση ενδιαφέροντος και όχι ολοκληρωμένη αγορά, ενεργή συνδρομή, επιβεβαιωμένη αξιολόγηση ή πληρωμή.</p>
+    <div class="actions"><button class="btn solid" type="button" id="d-ok">Κλείσιμο</button></div>
+  </div>
+</dialog>
+
 <script>
-    let currentPlan = "Verified";
+/* ===== SETTINGS: the only place to edit ===== */
+var CITY4ALL_CONTACT_EMAIL = "city4all2025@gmail.com";
+var DELIVERY_TESTED = false; /* set true after you received a real test email (see instructions) */
+/* ============================================ */
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i)};
+var PLANS={
+ inclusive:{subject:"New City4All Inclusive Partners Inquiry",label:"Inclusive Partners (μικρομεσαίες επιχειρήσεις)",org:"Επιχείρηση *",msg:"Γεια σας,\n\nΕνδιαφερόμαστε για τη συνεργασία Inclusive Partners.\nΕπιχείρηση / κατηγορία:\nΠόλη:\nΤι σας ενδιαφέρει (ψηφιακό προφίλ, QR code, αξιολόγηση):\n"},
+ enterprise:{subject:"New City4All Enterprise Partnership Inquiry",label:"Enterprise / Accessibility Partners",org:"Εταιρεία *",msg:"Γεια σας,\n\nΕνδιαφερόμαστε για εταιρική συνεργασία.\nΕταιρεία:\nΑριθμός και πόλεις τοποθεσιών:\nΤι σας ενδιαφέρει:\n"},
+ "public":{subject:"New City4All Public Sector Inquiry",label:"Public Sector",org:"Φορέας *",msg:"Γεια σας,\n\nΖητάμε διαβούλευση για συνεργασία δημόσιου τομέα.\nΦορέας:\nΧώροι ή υπηρεσίες που αφορά:\nΧρονοδιάγραμμα / διαδικασία προμηθειών (αν υπάρχει):\n"},
+ donation:{subject:"New City4All Donation Inquiry",label:"Ενδιαφέρον στήριξης (δωρεά)",org:"Φορέας",msg:"Γεια σας,\n\nΘα ήθελα να στηρίξω το City4All.\nΕνδεικτικό ποσό / είδος στήριξης (προαιρετικό):\n"}
+};
+var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, cur=null, busy=false;
+var dlg=$("compose"), done=$("done"), form=$("form");
 
-    function toggleBilling() {
-        const isAnnual = document.getElementById('billingToggle').checked;
-        document.getElementById('priceStarter').innerHTML = isAnnual ? '8€ <span>/μήνα (80€/έτος)</span>' : '10€ <span>/μήνα</span>';
-        document.getElementById('priceVerified').innerHTML = isAnnual ? '23€ <span>/μήνα (230€/έτος)</span>' : '29€ <span>/μήνα</span>';
-        document.getElementById('priceBusiness').innerHTML = isAnnual ? '40€+ <span>/μήνα</span>' : '50€+ <span>/μήνα</span>';
-    }
+if(!DELIVERY_TESTED){$("untested").textContent="Η αποστολή email δεν έχει ακόμη δοκιμαστεί.";}
 
-    function selectPlan(planName, price) {
-        currentPlan = planName;
-        document.getElementById('selectedPlanTitle').innerText = planName + " (" + price + ")";
-        document.getElementById('pricingView').style.display = 'none';
-        document.getElementById('checkoutView').classList.add('active');
-        document.getElementById('successView').classList.remove('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+function bad(rowId,on){$(rowId).classList.toggle("bad",on); var n=$(rowId).nextElementSibling; if(n&&n.classList.contains("err")){n.style.display=on?"block":"none"}}
+function clearErrors(){["r-name","r-org","r-email","r-phone","r-msg"].forEach(function(r){bad(r,false)});$("e-consent").style.display="none";$("r-consent").classList.remove("bad");$("fail").className="msg bad2"}
 
-    function showPricing() {
-        document.getElementById('pricingView').style.display = 'block';
-        document.getElementById('checkoutView').classList.remove('active');
-        document.getElementById('successView').classList.remove('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+function openPlan(key){
+  cur=key; var p=PLANS[key]; clearErrors();
+  $("to").value=CITY4ALL_CONTACT_EMAIL; $("subject").value=p.subject;
+  $("org-l").textContent=p.org; $("message").value=p.msg;
+  dlg.showModal(); $("name").focus();
+}
+Array.prototype.forEach.call(document.querySelectorAll("[data-open]"),function(b){b.addEventListener("click",function(){openPlan(b.getAttribute("data-open"))})});
+function closeCompose(){if(!busy){dlg.close()}}
+$("c-close").onclick=closeCompose; $("cancel").onclick=closeCompose;
+dlg.addEventListener("cancel",function(e){if(busy){e.preventDefault()}});
+$("d-close").onclick=$("d-ok").onclick=function(){done.close()};
 
-    function processPayment(event) {
-        event.preventDefault();
-        document.getElementById('confirmPlanName').innerText = currentPlan;
-        document.getElementById('checkoutView').classList.remove('active');
-        document.getElementById('successView').classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+function validate(){
+  clearErrors(); var ok=true,first=null;
+  function chk(row,good,el){if(!good){bad(row,true);ok=false;if(!first){first=el}}}
+  chk("r-name",$("name").value.trim().length>1,$("name"));
+  chk("r-org",cur==="donation"||$("org").value.trim().length>1,$("org"));
+  chk("r-email",emailRe.test($("email").value.trim()),$("email"));
+  var ph=$("phone").value.trim(); chk("r-phone",!ph||(ph.replace(/\D/g,"").length>=10&&/^[+\d\s().-]+$/.test(ph)),$("phone"));
+  chk("r-msg",$("message").value.trim().length>10,$("message"));
+  if(!$("consent").checked){$("r-consent").classList.add("bad");$("e-consent").style.display="block";ok=false;if(!first){first=$("consent")}}
+  if(first){first.focus()}
+  return ok;
+}
+
+var reason="";
+function fail(text){
+  var f=$("fail"); f.className="msg bad2 show"; f.innerHTML="";
+  f.appendChild(document.createTextNode(text+" "));
+  if(reason){var d=document.createElement("div");d.style.cssText="margin:.4rem 0;font-size:.85rem;opacity:.9";d.textContent="Τεχνική αιτία: "+reason;f.appendChild(d)}
+  var a=document.createElement("a");
+  a.href="mailto:"+CITY4ALL_CONTACT_EMAIL+"?subject="+encodeURIComponent(PLANS[cur].subject)+"&body="+encodeURIComponent($("message").value);
+  a.textContent="Ανοίξτε το δικό σας πρόγραμμα email"; f.appendChild(a); f.appendChild(document.createTextNode("."));
+  f.focus();
+}
+
+form.addEventListener("submit",function(e){
+  e.preventDefault(); if(busy){return}
+  if($("hp").value){return}
+  if(!validate()){return}
+  var p=PLANS[cur];
+  var body={
+    inquiry_type:p.label, name:$("name").value.trim(), organisation:$("org").value.trim()||"—",
+    email:$("email").value.trim(), phone:$("phone").value.trim()||"—", message:$("message").value.trim(),
+    privacy_consent:"Ναι", submitted_at_browser_time:new Date().toISOString(),
+    note:"Έκφραση ενδιαφέροντος — όχι αγορά, συνδρομή ή πληρωμή.",
+    _subject:p.subject, _template:"table", _captcha:"false"
+  };
+  reason=""; busy=true; $("send").disabled=true; $("send").textContent="Αποστολή…";
+  var ctrl=typeof AbortController==="function"?new AbortController():null, t=setTimeout(function(){ctrl&&ctrl.abort()},20000);
+  fetch("https://formsubmit.co/ajax/"+encodeURIComponent(CITY4ALL_CONTACT_EMAIL),{
+    method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
+    body:JSON.stringify(body),credentials:"omit",signal:ctrl?ctrl.signal:undefined
+  }).then(function(r){
+    clearTimeout(t);
+    return r.json().catch(function(){return null}).then(function(j){
+      if(!r.ok){reason="HTTP "+r.status+(j&&j.message?" — "+j.message:"");throw new Error("http")}
+      return j;
+    });
+  }).then(function(d){
+    /* Success ONLY if the service explicitly confirms. */
+    if(!d||!(d.success===true||d.success==="true")){reason=(d&&d.message)?d.message:"η υπηρεσία δεν επιβεβαίωσε την παραλαβή";throw new Error("not confirmed")}
+    form.reset(); dlg.close(); done.showModal(); $("d-ok").focus();
+  }).catch(function(e){
+    clearTimeout(t);
+    if(!reason){reason=(location.protocol==="file:")?"η σελίδα ανοίχτηκε από τον υπολογιστή σας (file://). Η υπηρεσία δουλεύει μόνο όταν η σελίδα είναι ανεβασμένη σε ιστότοπο (π.χ. GitHub Pages).":"αδυναμία σύνδεσης με την υπηρεσία"}
+    fail("Το μήνυμα ΔΕΝ στάλθηκε. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά. Τα στοιχεία σας έχουν διατηρηθεί. Εναλλακτικά:");
+  }).then(function(){busy=false;$("send").disabled=false;$("send").textContent="Αποστολή"});
+});
+})();
 </script>
-
 </body>
 </html>
