@@ -1,0 +1,44 @@
+<section id="inquiry-form" class="city4all-form-section">
+    <header class="major">
+        <h2>Φόρμα Εκδήλωσης Ενδιαφέροντος</h2>
+    </header>
+    <p>Συμπληρώστε τα στοιχεία σας και η ομάδα του City4All θα επικοινωνήσει μαζί σας.</p>
+    
+    <form id="businessInquiryForm" novalidate>
+        <div class="row gtr-uniform">
+            <div class="col-6 col-12-xsmall">
+                <label for="businessName">Όνομα Επιχείρησης *</label>
+                <input type="text" name="businessName" id="businessName" required aria-required="true" />
+            </div>
+            <div class="col-6 col-12-xsmall">
+                <label for="contactName">Ονοματεπώνυμο Υπευθύνου *</label>
+                <input type="text" name="contactName" id="contactName" required aria-required="true" />
+            </div>
+            <div class="col-6 col-12-xsmall">
+                <label for="contactEmail">Email Επικοινωνίας *</label>
+                <input type="email" name="contactEmail" id="contactEmail" required aria-required="true" />
+                <span class="error-message" id="emailError" aria-live="polite"></span>
+            </div>
+            <div class="col-6 col-12-xsmall">
+                <label for="serviceInterest">Υπηρεσία Ενδιαφέροντος</label>
+                <select name="serviceInterest" id="serviceInterest">
+                    <option value="plan_b">PLAN B — VERIFIED (Αξιολόγηση & Προφίλ)</option>
+                    <option value="plan_a">PLAN A — STARTER (Ψηφιακό Προφίλ Μόνο)</option>
+                    <option value="plan_c">PLAN C — BUSINESS+ (Πολλαπλά Καταστήματα)</option>
+                    <option value="sponsorship">Χορηγία / Συνεργασία</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label for="message">Πρόσθετες Πληροφορίες</label>
+                <textarea name="message" id="message" rows="4"></textarea>
+            </div>
+            <div class="col-12">
+                <ul class="actions">
+                    <li><button type="submit" class="button primary">Αποστολή Ενδιαφέροντος</button></li>
+                </ul>
+            </div>
+            <!-- Development Mode Notice -->
+            <div id="formStatus" class="city4all-notice" style="display: none;" aria-live="assertive"></div>
+        </div>
+    </form>
+</section>
